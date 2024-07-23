@@ -81,3 +81,8 @@ nav li a:hover {
 .imagen-visible {
     display: block; 
 }
+
+footer {background-color: #15823b;
+padding: 20px 0;
+text-align: center;}
+

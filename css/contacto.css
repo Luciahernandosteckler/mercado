@@ -3,7 +3,7 @@ body {
     background-image: url(../imagenes/contacto.png);
     background-size: cover;
     background-repeat: no-repeat;
-} 
+}
 
 nav,
 ul {
@@ -33,7 +33,7 @@ form {
     display: flex;
     flex-direction: column;
 
-   
+
 }
 
 .container {
@@ -79,4 +79,11 @@ button {
     color: beige;
     background-color: #fb78f1;
     border: #f5b2f9;
+}
+
+footer {
+    background-color: #15823b;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 100px;
 }
