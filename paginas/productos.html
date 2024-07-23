@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../paginas/productos.html">Productos</a></li>
+                <li><a href="../paginas/contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+
+    <div class="container">
+
+        <div class="card">
+            <p>Cereales $<span id="precio_cereales">300</span></p>
+            <input type="number" name="cant_cereales" id="cant_cereales" min="0" value="0" required> <img
+                src="../imagenes/1.jpg" alt="oferta1">
+            <button type="button" onclick="comprar('cereales')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Carne $<span id="precio_carne">390</span></p>
+            <input type="number" name="cant_carne" id="cant_carne" min="0" value="0" required> <img
+                src="../imagenes/2.jpg" alt="oferta2">
+            <button type="button" onclick="comprar('carne')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Azucar $<span id="precio_azucar">500</span></p>
+            <input type="number" name="cant_azucar" id="cant_azucar" min="0" value="0" required> <img
+                src="../imagenes/3.jpg" alt="oferta3">
+            <button type="button" onclick="comprar('azucar')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Fideos $<span id="precio_fideos">60</span></p>
+            <input type="number" name="cant_fideos" id="cant_fideos" min="0" value="0" required> <img
+                src="../imagenes/4.jpg" alt="oferta4">
+            <button type="button" onclick="comprar('fideos')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Arroz $<span id="precio_arroz">260</span></p>
+            <input type="number" name="cant_arroz" id="cant_arroz" min="0" value="0" required> <img
+                src="../imagenes/5.jpg" alt="oferta5">
+            <button type="button" onclick="comprar('arroz')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Café $<span id="precio_cafe">39</span></p>
+            <input type="number" name="cant_cafe" id="cant_cafe" min="0" value="0" required> <img
+                src="../imagenes/6.jpg" alt="oferta6">
+            <button type="button" onclick="comprar('cafe')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Miel $<span id="precio_miel">239</span></p>
+            <input type="number" name="cant_miel" id="cant_miel" min="0" value="0" required> <img
+                src="../imagenes/7.jpg" alt="oferta7">
+            <button type="button" onclick="comprar('miel')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Pan lactal $<span id="precio_panLactal">180</span></p>
+            <input type="number" name="cant_panLactal" id="cant_panLactal" min="0" value="0" required> <img
+                src="../imagenes/8.jpg" alt="oferta8">
+            <button type="button" onclick="comprar('panLactal')">Comprar</button>
+        </div>
+
+        <div class="card">
+            <p>Harina $<span id="precio_harina">190</span></p>
+            <input type="number" name="cant_harina" id="cant_harina" min="0" value="0" required> <img
+                src="../imagenes/9.jpg" alt="oferta9">
+            <button type="button" onclick="comprar('harina')">Comprar</button>
+        </div>
+
+    </div>
+
+    <p class="titulos">Total: $<span id="total">0</span></p>
+
+
+
+    <script src="../js/productos.js"></script>
+</body>
+
+</html>
