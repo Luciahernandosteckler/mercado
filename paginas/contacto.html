@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/contacto.css">
+    <link rel="stylesheet" href="../css/style.css">
     <title>Contacto</title>
 </head>
 
-<body>
+<body class="contacto-fondo">
     <header>
         <nav>
             <ul>
@@ -21,7 +21,7 @@
 
 
     </header>
-    <div class="container">
+    <div class="container-formulario">
         <h2 class="texto">Formulario de contacto</h2>
         <form>
             <label for="nombre">Nombre</label>
@@ -30,10 +30,13 @@
             <label for="apellido">Apellido</label>
             <input type="text" id="apellido" class="campo-grande">
 
+            <label for="email">Email</label>
+            <input type="text" id="email" class="campo-grande">
+
             <label for="consulta">Dejanos tu consulta!</label>
             <textarea id="consulta" rows="6" class="consulta-amplia"></textarea>
 
-            <button type="submit" id="enviar">Enviar</button>
+            <button class="contacto-button" type="submit" id="enviar">Enviar</button>
         </form>
     </div>
 

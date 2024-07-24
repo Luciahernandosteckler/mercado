@@ -1,5 +1,6 @@
 let nombre = document.getElementById("nombre");
 let apellido = document.getElementById("apellido");
+let email = document.getElementById("email");
 let consulta = document.getElementById("consulta");
 let btnEnviar = document.getElementById("enviar");
 
@@ -8,14 +9,15 @@ btnEnviar.addEventListener("click", (e) => {
 
     let nombreValor = nombre.value.trim();
     let apellidoValor = apellido.value.trim();
+    let emailValor =email.value.trim();
     let consultaValor = consulta.value.trim();
 
-    if (nombreValor === '' || apellidoValor === '' || consultaValor === '') {
+    if (nombreValor === '' || apellidoValor === '' ||emailValor === '' || consultaValor === '') {
         alert('Por favor, complete todos los campos.');
         return;
     }
 
-    let informacion = [nombreValor, apellidoValor, consultaValor];
+    let informacion = [nombreValor, apellidoValor, emailValor, consultaValor];
 
     console.log(`Su nombre es ${informacion[0]}, su apellido es ${informacion[1]} y su consulta es: ${informacion[2]}`);
 
