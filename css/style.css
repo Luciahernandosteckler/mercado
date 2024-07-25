@@ -62,9 +62,10 @@
 
 /*Pagina Productos*/
 
-.body-productos {
+.productos {
     background-color: #bbddb9;
 }
+
 
 nav,
 ul {
@@ -152,11 +153,10 @@ nav li a:hover {
 }
 
 .titulos {
-    font-family: math;
     font-size: 25px;
     color: darkcyan;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 900;
     text-align: center;
 }
 
@@ -165,7 +165,7 @@ footer {
     padding: 20px 0;
     text-align: center;
     color: white;
-    
+
 }
 
 /*Pagina contacto*/
@@ -230,4 +230,3 @@ label {
     border-radius: 20px;
     margin-bottom: 50px;
 }
-
