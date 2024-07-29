@@ -1,11 +1,32 @@
+/*NAVEGADOR - GENERAL*/
+nav,
+ul {
+    display: flex;
+    list-style-type: none;
+    background-color: #15823b;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+
+li a,
+.whatsapp-link {
+    font-size: 35px;
+    font-family: math;
+    color: white;
+    text-decoration: none;
+    padding: 20px 20PX;
+    font-weight: 700;
+}
+
+nav li a:hover {
+    color: rgb(223, 158, 212);
+}
+
 /*Pagina Index*/
 
 .body-index {
     background-color: #bbddb9;
-}
-
-.text-content {
-    margin-bottom: 20px;
 }
 
 .container-index {
@@ -26,8 +47,6 @@
     gap: 10px;
     justify-content: center;
     background: #cfffd5;
-
-
 }
 
 .imagen-historia {
@@ -35,7 +54,6 @@
     object-fit: cover;
     flex-direction: column;
     align-items: stretch;
-
 }
 
 .image-item img {
@@ -49,8 +67,6 @@
     object-fit: cover;
 }
 
-
-
 .image-container img {
     display: none;
 }
@@ -59,57 +75,26 @@
     display: block;
 }
 
-
 /*Pagina Productos*/
 
 .productos {
     background-color: #bbddb9;
 }
 
-
-nav,
-ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    list-style-type: none;
-    margin: 0;
-    background-color: #15823b;
-}
-
-li a {
-    font-size: 35px;
-    font-family: math;
-    color: white;
-    text-decoration: none;
-    padding: 20px 20px;
-    font-weight: 700;
-}
-
-nav li a:hover {
-    color: rgb(223, 158, 212);
-}
-
 .container-productos {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     gap: 20px;
-    padding-left: 20%;
-    padding-right: 20%;
-    margin-top: 50px;
-
+    padding-left: 25%;
+    padding-right: 25%;
+    margin-top: 20px;
 }
 
 .card {
-    flex: 0 1 calc(27% - 20px);
-    max-width: calc(23% - 10px);
     background-color: #d7f5cf;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
     text-align: center;
     padding: 30px;
     margin-top: 10px;
@@ -123,9 +108,6 @@ nav li a:hover {
 }
 
 .card img {
-    max-width: 100%;
-    height: auto;
-    max-height: 300px;
     border-radius: 20px 20px 0 0;
     margin-bottom: 10px;
 }
@@ -138,13 +120,13 @@ nav li a:hover {
     font-size: 1rem;
     padding: 8px 20px;
     margin-top: auto;
-
+    border-radius: 10px 10px 0 0;
 }
 
 .input-productos {
     border: solid 2px aliceblue;
     border-radius: 30%;
-    background: #e2f7bd;
+    background-color: #e2f7bd;
     width: 80px;
     font-size: 25px;
     color: darkcyan;
@@ -153,11 +135,32 @@ nav li a:hover {
 }
 
 .titulos {
-    font-size: 25px;
-    color: darkcyan;
-    font-style: normal;
+    font-family: system-ui;
+    font-size: 35px;
     font-weight: 900;
     text-align: center;
+    color: #15823b;
+}
+
+#payment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url(../imagenes/cobros.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    opacity: 88%;
+    margin-bottom: 10px;
+
+}
+
+.tarjeta {
+    color: rgb(17, 1, 1);
+    font-size: 15px;
 }
 
 footer {
@@ -165,7 +168,6 @@ footer {
     padding: 20px 0;
     text-align: center;
     color: white;
-
 }
 
 /*Pagina contacto*/
@@ -191,7 +193,7 @@ form {
 .campo-grande {
     padding: 10px;
     font-size: 30px;
-    border: 3px solid #f5b2f9;
+    border: 3px solid #a6eeaf;
     border-radius: 30px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -200,33 +202,57 @@ form {
 .consulta-amplia {
     padding: 10px;
     font-size: 20px;
-    border: 3px solid #fb78f1;
+    border: 3px solid #a6eeaf;
     border-radius: 30px;
     margin-top: 15px;
     margin-bottom: 14px;
-
-}
-
-.texto {
-    font-family: math;
-    color: #0a6329;
-    font-size: 35px;
-    font-weight: 900;
 }
 
 label {
     font-size: 30px;
-    color: #0a6329;
+    color: #197a3b;
     font-weight: 600;
 }
 
-.contacto-button {
+.contacto-button,
+.button,
+.btn-primary,
+.btn {
     font-size: 30px;
     width: fit-content;
     height: 50px;
     color: beige;
-    background-color: #fb78f1;
-    border: #f5b2f9;
+    background-color: #53be79;
+    border: #7bd4aa;
     border-radius: 20px;
-    margin-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.contacto-button:hover {
+    color: #197a3b;
+}
+
+.image-contacto {
+    display: flex;
+    flex-direction: column;
+}
+
+.whatsapp-link {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    margin-right: 90px;
+    margin-bottom: 40px;
+    color: #197a3b;
+}
+
+.whatsapp-link img {
+    display: flex;
+    width: 120px;
+    height: 120px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-direction: column;
 }

@@ -1,13 +1,16 @@
 const productos = [
-    { nombre: "Cereales", precio: 300, cantidad: 100, imagen: "1.jpg" },
-    { nombre: "Carne", precio: 390, cantidad: 50, imagen: "2.jpg" },
-    { nombre: "Azucar", precio: 500, cantidad: 20, imagen: "3.jpg" },
-    { nombre: "Fideos", precio: 60, cantidad: 21, imagen: "4.jpg" },
-    { nombre: "Arroz", precio: 260, cantidad: 30, imagen: "5.jpg" },
-    { nombre: "Café", precio: 39, cantidad: 60, imagen: "6.jpg" },
-    { nombre: "Miel", precio: 239, cantidad: 10, imagen: "7.jpg" },
-    { nombre: "Pan Lactal", precio: 180, cantidad: 90, imagen: "8.jpg" },
-    { nombre: "Harina", precio: 190, cantidad: 100, imagen: "9.jpg" }
+    { nombre: "Cereales", precio: 300, cantidad: 100, imagen: "1.png" },
+    { nombre: "Carne", precio: 390, cantidad: 50, imagen: "2.png" },
+    { nombre: "Azucar", precio: 500, cantidad: 20, imagen: "3.png" },
+    { nombre: "Fideos", precio: 60, cantidad: 21, imagen: "4.png" },
+    { nombre: "Arroz", precio: 260, cantidad: 30, imagen: "5.png" },
+    { nombre: "Café", precio: 39, cantidad: 60, imagen: "6.png" },
+    { nombre: "Miel", precio: 239, cantidad: 10, imagen: "7.png" },
+    { nombre: "Pan Lactal", precio: 180, cantidad: 90, imagen: "8.png" },
+    { nombre: "Harina", precio: 190, cantidad: 100, imagen: "9.png" },
+    { nombre: "Yerba", precio: 1900, cantidad: 10, imagen: "10.png" },
+    { nombre: "Queso", precio: 1800, cantidad: 120, imagen: "11.png" },
+    { nombre: "Jamon", precio: 1780, cantidad: 110, imagen: "12.png" }
 ];
 
 function comprarProducto(nombreProducto) {
@@ -21,6 +24,12 @@ function comprarProducto(nombreProducto) {
     if (cantidadSeleccionada > 0 && producto.cantidad >= cantidadSeleccionada) {
         let totalProducto = cantidadSeleccionada * producto.precio;
         producto.cantidad -= cantidadSeleccionada;
+
+        const cantidadDisponibleElemento = document.getElementById(`stock_${nombreProducto}`);
+        if (cantidadDisponibleElemento) {
+            cantidadDisponibleElemento.textContent = `Stock: ${producto.cantidad}`;
+        }
+
         document.getElementById(`precio_${nombreProducto}`).innerText = totalProducto;
         actualizarTotalCompra();
     } else {
@@ -37,7 +46,7 @@ function actualizarTotalCompra() {
         totalCompra += cantidad * precio;
     });
 
-    document.getElementById("total").innerText = ` total $${totalCompra}`;
+    document.getElementById("total").innerText = `${totalCompra}`;
 }
 
 
@@ -58,6 +67,11 @@ function generarTarjetasProductos() {
         const precioProductoElemento = document.createElement("p");
         precioProductoElemento.textContent = `Precio: $${producto.precio}`;
 
+        const cantidadDisponibleElemento = document.createElement("p");
+        cantidadDisponibleElemento.id = `stock_${producto.nombre}`; // Asignar id único
+        cantidadDisponibleElemento.textContent = `Stock: ${producto.cantidad}`;
+
+
         const inputCantidadProducto = document.createElement("input");
         inputCantidadProducto.classList.add("input-productos");
         inputCantidadProducto.type = "number";
@@ -65,6 +79,7 @@ function generarTarjetasProductos() {
         inputCantidadProducto.min = "0";
         inputCantidadProducto.value = "0";
         inputCantidadProducto.required = true;
+
 
         const botonComprarProducto = document.createElement("button");
         botonComprarProducto.classList.add("button-productos");
@@ -81,6 +96,8 @@ function generarTarjetasProductos() {
         tarjetaProducto.appendChild(inputCantidadProducto);
         tarjetaProducto.appendChild(botonComprarProducto);
         tarjetaProducto.appendChild(precioTotalProductoElemento);
+        tarjetaProducto.appendChild(cantidadDisponibleElemento); // stock visible
+
 
         contenedorProductos.appendChild(tarjetaProducto);
 
