@@ -3,17 +3,36 @@ let apellido = document.getElementById("apellido");
 let email = document.getElementById("email");
 let consulta = document.getElementById("consulta");
 let btnEnviar = document.getElementById("enviar");
+let emailRegex = /.+@.+\..+/;
 
 btnEnviar.addEventListener("click", (e) => {
     e.preventDefault();
 
     let nombreValor = nombre.value.trim();
     let apellidoValor = apellido.value.trim();
-    let emailValor =email.value.trim();
+    let emailValor = email.value.trim();
     let consultaValor = consulta.value.trim();
 
-    if (nombreValor === '' || apellidoValor === '' ||emailValor === '' || consultaValor === '') {
-        alert('Por favor, complete todos los campos.');
+    if (nombreValor === '' || apellidoValor === '' || emailValor === '' || consultaValor === '') {
+        Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: ('Por favor, complete todos los campos.'),
+            showConfirmButton: true,
+            timer: 3000
+        });
+        return;
+    }
+
+    if (!emailRegex.test(emailValor)) {
+        Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: ('Por favor, ingrese un correo electrónico válido que contenga @.'),
+            showConfirmButton: true,
+            timer: 3000
+        });
+
         return;
     }
 
@@ -24,4 +43,5 @@ btnEnviar.addEventListener("click", (e) => {
     let blob = new Blob([informacion], { type: "text/plain;charset=utf-8" });
 
     saveAs(blob, "contact.txt");
+
 });

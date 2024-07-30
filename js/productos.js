@@ -32,8 +32,23 @@ function comprarProducto(nombreProducto) {
 
         document.getElementById(`precio_${nombreProducto}`).innerText = totalProducto;
         actualizarTotalCompra();
+        Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: '¡Compra realizada con éxito!',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
     } else {
-        alert("Ingrese una cantidad mayor a cero o no hay suficiente stock.");
+    
+        Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: 'Ingrese una cantidad mayor a cero o no hay suficiente stock.',
+            showConfirmButton: true,
+            timer: 3000
+        });
     }
 }
 
@@ -46,8 +61,18 @@ function actualizarTotalCompra() {
         totalCompra += cantidad * precio;
     });
 
+    const descuentoEn = 100000;
+    const descuentoPorcentaje = 0.30;
+
+    let totalConDescuento = totalCompra;
+    if (totalCompra >= descuentoEn) {
+        totalConDescuento = totalCompra * (1 - descuentoPorcentaje)
+    }
+
     document.getElementById("total").innerText = `${totalCompra}`;
+    document.getElementById("total_con_descuento").innerText = `Total con descuento: $${totalConDescuento}`;
 }
+
 
 
 function generarTarjetasProductos() {
