@@ -33,7 +33,7 @@ function comprarProducto(nombreProducto) {
         document.getElementById(`precio_${nombreProducto}`).innerText = totalProducto;
         actualizarTotalCompra();
         Swal.fire({
-            position: 'top-center',
+            position: 'center',
             icon: 'success',
             title: '¡Compra realizada con éxito!',
             showConfirmButton: false,
@@ -41,9 +41,9 @@ function comprarProducto(nombreProducto) {
         });
 
     } else {
-    
+
         Swal.fire({
-            position: 'top-center',
+            position: 'center',
             icon: 'error',
             title: 'Ingrese una cantidad mayor a cero o no hay suficiente stock.',
             showConfirmButton: true,
@@ -69,11 +69,9 @@ function actualizarTotalCompra() {
         totalConDescuento = totalCompra * (1 - descuentoPorcentaje)
     }
 
-    document.getElementById("total").innerText = `${totalCompra}`;
-    document.getElementById("total_con_descuento").innerText = `Total con descuento: $${totalConDescuento}`;
+    document.getElementById("total").innerText = `${totalCompra.toFixed(2)}`;
+    document.getElementById("total_con_descuento").innerText = `Total con descuento: $${totalConDescuento.toFixed(2)}`;
 }
-
-
 
 function generarTarjetasProductos() {
     const contenedorProductos = document.getElementById("productos-container");
@@ -93,9 +91,8 @@ function generarTarjetasProductos() {
         precioProductoElemento.textContent = `Precio: $${producto.precio}`;
 
         const cantidadDisponibleElemento = document.createElement("p");
-        cantidadDisponibleElemento.id = `stock_${producto.nombre}`; // Asignar id único
+        cantidadDisponibleElemento.id = `stock_${producto.nombre}`;
         cantidadDisponibleElemento.textContent = `Stock: ${producto.cantidad}`;
-
 
         const inputCantidadProducto = document.createElement("input");
         inputCantidadProducto.classList.add("input-productos");
@@ -104,7 +101,6 @@ function generarTarjetasProductos() {
         inputCantidadProducto.min = "0";
         inputCantidadProducto.value = "0";
         inputCantidadProducto.required = true;
-
 
         const botonComprarProducto = document.createElement("button");
         botonComprarProducto.classList.add("button-productos");
@@ -121,11 +117,9 @@ function generarTarjetasProductos() {
         tarjetaProducto.appendChild(inputCantidadProducto);
         tarjetaProducto.appendChild(botonComprarProducto);
         tarjetaProducto.appendChild(precioTotalProductoElemento);
-        tarjetaProducto.appendChild(cantidadDisponibleElemento); // stock visible
-
+        tarjetaProducto.appendChild(cantidadDisponibleElemento);
 
         contenedorProductos.appendChild(tarjetaProducto);
-
 
     });
 }
