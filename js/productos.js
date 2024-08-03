@@ -14,15 +14,27 @@ const productos = [
 ];
 
 function comprarProducto(nombreProducto) {
-    let cantidadSeleccionada = Number(document.getElementById(`cant_${nombreProducto}`).value);
+    let cantidadSeleccionada = parseInt(document.getElementById(`cant_${nombreProducto}`).value);
     let producto = productos.find(p => p.nombre === nombreProducto);
 
     if (!producto) {
         return;
     }
 
+   if (isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1 || cantidadSeleccionada.toString() !== document.getElementById(`cant_${nombreProducto}`).value) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Ingrese una cantidad válida',
+            showConfirmButton: true,
+            timer: 1000
+        });
+        return;
+    }
+    
     if (cantidadSeleccionada > 0 && producto.cantidad >= cantidadSeleccionada) {
-        let totalProducto = cantidadSeleccionada * producto.precio;
+
+        let totalProducto = parseInt(cantidadSeleccionada * producto.precio, 10);
         producto.cantidad -= cantidadSeleccionada;
 
         const cantidadDisponibleElemento = document.getElementById(`stock_${nombreProducto}`);
@@ -37,7 +49,7 @@ function comprarProducto(nombreProducto) {
             icon: 'success',
             title: '¡Compra realizada con éxito!',
             showConfirmButton: false,
-            timer: 1500
+            timer: 1000
         });
 
     } else {
@@ -47,7 +59,7 @@ function comprarProducto(nombreProducto) {
             icon: 'error',
             title: 'Ingrese una cantidad mayor a cero o no hay suficiente stock.',
             showConfirmButton: true,
-            timer: 3000
+            timer: 1000
         });
     }
 }
@@ -58,7 +70,7 @@ function actualizarTotalCompra() {
     productos.forEach(producto => {
         let cantidad = Number(document.getElementById(`cant_${producto.nombre}`).value);
         let precio = producto.precio;
-        totalCompra += cantidad * precio;
+        totalCompra += parseInt(cantidad * precio, 10);
     });
 
     const descuentoEn = 100000;
@@ -69,8 +81,8 @@ function actualizarTotalCompra() {
         totalConDescuento = totalCompra * (1 - descuentoPorcentaje)
     }
 
-    document.getElementById("total").innerText = `${totalCompra.toFixed(2)}`;
-    document.getElementById("total_con_descuento").innerText = `Total con descuento: $${totalConDescuento.toFixed(2)}`;
+    document.getElementById("total").innerText = `${parseInt(totalCompra, 10)}`;
+    document.getElementById("total_con_descuento").innerText = `Total con descuento: $${parseInt(totalConDescuento, 10)}`;
 }
 
 function generarTarjetasProductos() {
@@ -101,11 +113,13 @@ function generarTarjetasProductos() {
         inputCantidadProducto.min = "0";
         inputCantidadProducto.value = "0";
         inputCantidadProducto.required = true;
+        inputCantidadProducto.step = "1";  // Solo números enteros
 
         const botonComprarProducto = document.createElement("button");
         botonComprarProducto.classList.add("button-productos");
         botonComprarProducto.textContent = "Comprar";
         botonComprarProducto.addEventListener("click", () => comprarProducto(producto.nombre));
+        
 
         const precioTotalProductoElemento = document.createElement("p");
         precioTotalProductoElemento.id = `precio_${producto.nombre}`;
