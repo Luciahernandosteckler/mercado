@@ -21,7 +21,7 @@ function comprarProducto(nombreProducto) {
         return;
     }
 
-   if (isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1 || cantidadSeleccionada.toString() !== document.getElementById(`cant_${nombreProducto}`).value) {
+    if (isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1 || cantidadSeleccionada.toString() !== document.getElementById(`cant_${nombreProducto}`).value) {
         Swal.fire({
             position: 'center',
             icon: 'error',
@@ -31,7 +31,7 @@ function comprarProducto(nombreProducto) {
         });
         return;
     }
-    
+
     if (cantidadSeleccionada > 0 && producto.cantidad >= cantidadSeleccionada) {
 
         let totalProducto = parseInt(cantidadSeleccionada * producto.precio, 10);
@@ -119,7 +119,6 @@ function generarTarjetasProductos() {
         botonComprarProducto.classList.add("button-productos");
         botonComprarProducto.textContent = "Comprar";
         botonComprarProducto.addEventListener("click", () => comprarProducto(producto.nombre));
-        
 
         const precioTotalProductoElemento = document.createElement("p");
         precioTotalProductoElemento.id = `precio_${producto.nombre}`;
@@ -142,3 +141,56 @@ document.addEventListener("DOMContentLoaded", () => {
     generarTarjetasProductos();
     actualizarTotalCompra();
 });
+
+
+/*BOOSTRAP " estilo carrito"*/
+
+function mostrarDetallesOffcanvas() {
+    const productList = document.getElementById('productList');
+    productList.innerHTML = ''; // Limpiar contenido anterior
+
+    let totalCompra = 0;
+
+    productos.forEach(producto => {
+        let cantidad = Number(document.getElementById(`cant_${producto.nombre}`).value) || 0;
+
+        // Validar que la cantidad sea mayor que 0 y no exceda el stock disponible
+        if (cantidad > 0 && cantidad <= producto.cantidad) {
+            const productoDiv = document.createElement('div');
+            productoDiv.className = 'mb-3';
+
+            const nombre = document.createElement('h5');
+            nombre.textContent = producto.nombre;
+
+            const cantidadElemento = document.createElement('p');
+            cantidadElemento.textContent = `Cantidad: ${cantidad}`;
+
+            const total = document.createElement('p');
+            const totalConDescuento = producto.precio * cantidad; 
+            total.textContent = `Total: $${totalConDescuento}`;
+
+            // Actualizar el total de la compra
+            totalCompra += totalConDescuento;
+
+            productoDiv.appendChild(nombre);
+            productoDiv.appendChild(cantidadElemento);
+            productoDiv.appendChild(total);
+
+            productList.appendChild(productoDiv);
+        }
+    });
+
+    // Agregar el total general al final del offcanvas
+    const totalDiv = document.createElement('div');
+    totalDiv.className = 'mt-3';
+
+    const totalCompraElemento = document.createElement('p');
+    totalCompraElemento.textContent = `Total compra: $${totalCompra}`;
+
+    totalDiv.appendChild(totalCompraElemento);
+    productList.appendChild(totalDiv);
+}
+
+document.querySelector('button[data-bs-toggle="offcanvas"]').addEventListener('click', mostrarDetallesOffcanvas);
+
+

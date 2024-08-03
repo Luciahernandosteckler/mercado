@@ -81,6 +81,15 @@ nav li a:hover {
     background-color: #bbddb9;
 }
 
+.offcanvas.show:not(.hiding),
+.offcanvas.showing {
+    background-color:  #15823b;
+    transform: none;
+    color: white;
+    font-size: 22px;
+    font-weight: 600;
+}
+
 .container-productos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -255,11 +264,12 @@ label {
 
 .whatsapp-link {
     display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-end;
+    flex-direction: row;
     margin-right: 90px;
-    margin-bottom: 40px;
     color: #197a3b;
+    align-content: stretch;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .whatsapp-link img {
