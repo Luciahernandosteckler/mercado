@@ -13,15 +13,11 @@ const productos = [
     { nombre: "Jamon", precio: 1780, cantidad: 110, imagen: "12.png" }
 ];
 
-function comprarProducto(nombreProducto) {
-    let cantidadSeleccionada = parseInt(document.getElementById(`cant_${nombreProducto}`).value);
+function calcularTotalProducto(nombreProducto) {
+    let cantidadSeleccionada = parseInt(document.getElementById(`cant_${nombreProducto}`).value, 10);
     let producto = productos.find(p => p.nombre === nombreProducto);
 
-    if (!producto) {
-        return;
-    }
-
-    if (isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1 || cantidadSeleccionada.toString() !== document.getElementById(`cant_${nombreProducto}`).value) {
+    if (!producto || isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1) {
         Swal.fire({
             position: 'center',
             icon: 'error',
@@ -29,12 +25,32 @@ function comprarProducto(nombreProducto) {
             showConfirmButton: true,
             timer: 1000
         });
+        return 0; // Retorna 0 si hay un error
+    }
+
+    // Retorna el total del producto si la cantidad es válida
+    return cantidadSeleccionada * producto.precio;
+}
+
+// Función para manejar la compra del producto
+function comprarProducto(nombreProducto) {
+    let producto = productos.find(p => p.nombre === nombreProducto);
+    let cantidadSeleccionada = parseInt(document.getElementById(`cant_${nombreProducto}`).value, 10);
+
+    if (!producto || isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1 || cantidadSeleccionada > producto.cantidad) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Ingrese una cantidad válida o no hay suficiente stock.',
+            showConfirmButton: true,
+            timer: 1000
+        });
         return;
     }
 
-    if (cantidadSeleccionada > 0 && producto.cantidad >= cantidadSeleccionada) {
+    let totalProducto = calcularTotalProducto(nombreProducto);
 
-        let totalProducto = parseInt(cantidadSeleccionada * producto.precio, 10);
+    if (totalProducto > 0) {
         producto.cantidad -= cantidadSeleccionada;
 
         const cantidadDisponibleElemento = document.getElementById(`stock_${nombreProducto}`);
@@ -42,8 +58,10 @@ function comprarProducto(nombreProducto) {
             cantidadDisponibleElemento.textContent = `Stock: ${producto.cantidad}`;
         }
 
-        document.getElementById(`precio_${nombreProducto}`).innerText = totalProducto;
-        actualizarTotalCompra();
+        document.getElementById(`precio_${nombreProducto}`).innerText = `Precio total: $${totalProducto}`;
+
+        actualizarTotalCompra(); // Actualiza el total general
+
         Swal.fire({
             position: 'center',
             icon: 'success',
@@ -51,26 +69,16 @@ function comprarProducto(nombreProducto) {
             showConfirmButton: false,
             timer: 1000
         });
-
-    } else {
-
-        Swal.fire({
-            position: 'center',
-            icon: 'error',
-            title: 'Ingrese una cantidad mayor a cero o no hay suficiente stock.',
-            showConfirmButton: true,
-            timer: 1000
-        });
     }
 }
 
+// Función para actualizar el total de la compra
 function actualizarTotalCompra() {
     let totalCompra = 0;
 
     productos.forEach(producto => {
-        let cantidad = Number(document.getElementById(`cant_${producto.nombre}`).value);
-        let precio = producto.precio;
-        totalCompra += parseInt(cantidad * precio, 10);
+        let cantidad = parseInt(document.getElementById(`cant_${producto.nombre}`).value, 10) || 0;
+        totalCompra += cantidad * producto.precio;
     });
 
     const descuentoEn = 100000;
@@ -78,12 +86,66 @@ function actualizarTotalCompra() {
 
     let totalConDescuento = totalCompra;
     if (totalCompra >= descuentoEn) {
-        totalConDescuento = totalCompra * (1 - descuentoPorcentaje)
+        totalConDescuento = totalCompra * (1 - descuentoPorcentaje);
     }
 
-    document.getElementById("total").innerText = `${parseInt(totalCompra, 10)}`;
-    document.getElementById("total_con_descuento").innerText = `Total con descuento: $${parseInt(totalConDescuento, 10)}`;
+    document.getElementById("total").innerText = `$${totalCompra.toFixed(2)}`;
+    document.getElementById("total_con_descuento").innerText = `Total con descuento: $${totalConDescuento.toFixed(2)}`;
 }
+
+// Función para mostrar los detalles en el offcanvas
+function mostrarDetallesOffcanvas() {
+    const productList = document.getElementById('productList');
+    productList.innerHTML = ''; // Limpiar contenido anterior
+
+    let totalCompra = 0;
+
+    productos.forEach(producto => {
+        let cantidad = parseInt(document.getElementById(`cant_${producto.nombre}`).value, 10) || 0;
+
+        if (cantidad > 0) {
+            const productoDiv = document.createElement('div');
+            productoDiv.className = 'mb-3';
+
+            const nombre = document.createElement('h2');
+            nombre.textContent = producto.nombre;
+
+            const cantidadElemento = document.createElement('p');
+            cantidadElemento.textContent = `Cantidad: ${cantidad}`;
+
+            const precioElemento = document.createElement('p');
+            precioElemento.textContent = `Precio por unidad: $${producto.precio.toFixed(2)}`;
+
+            const totalElemento = document.createElement('p');
+            const totalConDescuento = cantidad * producto.precio;
+            totalElemento.textContent = `Total: $${totalConDescuento.toFixed(2)}`;
+
+            // Actualizar el total de la compra
+            totalCompra += totalConDescuento;
+
+            productoDiv.appendChild(nombre);
+            productoDiv.appendChild(cantidadElemento);
+            productoDiv.appendChild(precioElemento);
+            productoDiv.appendChild(totalElemento);
+
+            productList.appendChild(productoDiv);
+        }
+    });
+
+    // Agregar el total general al final del offcanvas
+    const totalDiv = document.createElement('div');
+    totalDiv.className = 'mt-3';
+
+    const totalCompraElemento = document.createElement('p');
+    totalCompraElemento.textContent = `Total compra: ${totalCompra.toFixed(2)}`;
+
+    totalDiv.appendChild(totalCompraElemento);
+    productList.appendChild(totalDiv);
+}
+
+// Event listener para el botón del offcanvas
+document.querySelector('button[data-bs-toggle="offcanvas"]').addEventListener('click', mostrarDetallesOffcanvas);
+
 
 function generarTarjetasProductos() {
     const contenedorProductos = document.getElementById("productos-container");
@@ -110,10 +172,6 @@ function generarTarjetasProductos() {
         inputCantidadProducto.classList.add("input-productos");
         inputCantidadProducto.type = "number";
         inputCantidadProducto.id = `cant_${producto.nombre}`;
-        inputCantidadProducto.min = "0";
-        inputCantidadProducto.value = "0";
-        inputCantidadProducto.required = true;
-        inputCantidadProducto.step = "1";  // Solo números enteros
 
         const botonComprarProducto = document.createElement("button");
         botonComprarProducto.classList.add("button-productos");
@@ -143,54 +201,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-/*BOOSTRAP " estilo carrito"*/
-
-function mostrarDetallesOffcanvas() {
-    const productList = document.getElementById('productList');
-    productList.innerHTML = ''; // Limpiar contenido anterior
-
-    let totalCompra = 0;
-
-    productos.forEach(producto => {
-        let cantidad = Number(document.getElementById(`cant_${producto.nombre}`).value) || 0;
-
-        // Validar que la cantidad sea mayor que 0 y no exceda el stock disponible
-        if (cantidad > 0 && cantidad <= producto.cantidad) {
-            const productoDiv = document.createElement('div');
-            productoDiv.className = 'mb-3';
-
-            const nombre = document.createElement('h5');
-            nombre.textContent = producto.nombre;
-
-            const cantidadElemento = document.createElement('p');
-            cantidadElemento.textContent = `Cantidad: ${cantidad}`;
-
-            const total = document.createElement('p');
-            const totalConDescuento = producto.precio * cantidad; 
-            total.textContent = `Total: $${totalConDescuento}`;
-
-            // Actualizar el total de la compra
-            totalCompra += totalConDescuento;
-
-            productoDiv.appendChild(nombre);
-            productoDiv.appendChild(cantidadElemento);
-            productoDiv.appendChild(total);
-
-            productList.appendChild(productoDiv);
-        }
-    });
-
-    // Agregar el total general al final del offcanvas
-    const totalDiv = document.createElement('div');
-    totalDiv.className = 'mt-3';
-
-    const totalCompraElemento = document.createElement('p');
-    totalCompraElemento.textContent = `Total compra: $${totalCompra}`;
-
-    totalDiv.appendChild(totalCompraElemento);
-    productList.appendChild(totalDiv);
-}
-
-document.querySelector('button[data-bs-toggle="offcanvas"]').addEventListener('click', mostrarDetallesOffcanvas);
 
 
