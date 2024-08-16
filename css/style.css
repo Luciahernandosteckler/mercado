@@ -1,11 +1,8 @@
-/*NAVEGADOR - GENERAL*/
-nav,
-ul {
-    display: flex;
-    list-style-type: none;
-    background-color: #15823b;
-    justify-content: space-evenly;
-    margin-top: 10px;
+/* NAVEGADOR - GENERAL */
+nav {
+    font-size: 35px;
+    background-color: darkgreen;
+
 }
 
 
@@ -15,12 +12,14 @@ li a,
     font-family: math;
     color: white;
     text-decoration: none;
-    padding: 20px 20PX;
+    padding: 20px 20px;
     font-weight: 700;
 }
 
 nav li a:hover {
-    color: rgb(223, 158, 212);
+    color: rgb(235, 235, 235);
+    text-shadow: 1px 1px 3px rgba(216, 211, 211, 0.5);
+    border-radius: 5px;
 }
 
 /*Pagina Index*/
@@ -76,14 +75,13 @@ nav li a:hover {
 }
 
 /*Pagina Productos*/
-
 .productos {
     background-color: #bbddb9;
 }
 
 .offcanvas.show:not(.hiding),
 .offcanvas.showing {
-    background-color:  #15823b;
+    background-color: #15823b;
     transform: none;
     color: white;
     font-size: 22px;
@@ -242,7 +240,7 @@ label {
 .button,
 .btn-primary,
 .btn {
-    font-size: 35px;
+    font-size: 30px;
     width: fit-content;
     height: 50px;
     color: beige;

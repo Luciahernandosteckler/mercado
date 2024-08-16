@@ -12,28 +12,41 @@
 
 <body class="productos">
     <header>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../paginas/productos.html">Productos</a></li>
-                <li><a href="../paginas/contacto.html">Contacto</a></li>
-            </ul>
+        <nav class="navbar navbar-custom">
+            <div class="container-fluid">
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarToggleContent" aria-controls="navbarToggleContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-none d-lg-flex justify-content-center" id="navbarToggleContent">
+                    <ul class="navbar-nav d-flex flex-row">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../paginas/productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../paginas/contacto.html">Contacto</a></li>
+                    </ul>
         </nav>
     </header>
 
-    <!-- Botón para mostrar el offcanvas -->
+    <!-- Botón para abrir el offcanvas -->
     <button class="btn btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
-        aria-controls="offcanvasScrolling">Ver Productos</button>
+        aria-controls="offcanvasScrolling">
+        Ver Carrito
+    </button>
 
-    <!-- Offcanvas -->
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+    <!-- Offcanvas para el carrito -->
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1"
         id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Detalles del Producto</h5>
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Carrito de Compras</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body" id="productList">
-            <!-- Aquí ingresan los productos con JavaScript -->
+        <div class="offcanvas-body" id="carrito-contenido">
+            <!-- Aquí se mostrarán los productos del carrito -->
+        </div>
+        <div class="offcanvas-footer d-flex justify-content-between">
+            <p>Total: $<span id="total-carrito">0</span></p>
+            <button class="btn btn-primary" onclick="finalizarCompra()">Finalizar Compra</button>
         </div>
     </div>
 
@@ -43,8 +56,8 @@
     </div>
 
     <div class="total-container">
-        <p class="titulos">Total: $<span id="total">0</span></p>
-        <p id="total_con_descuento" class="titulos3">Total con descuento: $0</p>
+        <p class="titulos">Total: $<span id="total-sin-descuento">0</span></p>
+        <p id="total-con-descuento" class="titulos3">Total con descuento: $0</p>
     </div>
 
     <div class="container mt-5">
@@ -74,14 +87,13 @@
         </form>
     </div>
 
-
     <footer>
         <div class="copyright">
             <p>© 2024 Lucia Hernando. Todos los derechos reservados </p>
         </div>
     </footer>
 
-    <script src="../js/productos.js"></script>
+    <!-- Scripts de bibliotecas externas -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
