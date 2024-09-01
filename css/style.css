@@ -36,6 +36,25 @@ nav li a:hover {
     transition: all 0.3s ease;
 }
 
+.swal2-popup {
+    font-size: 14px;
+    width: 250px;
+    padding: 20px;
+}
+
+.swal2-title {
+    font-size: 16px;
+}
+
+.swal2-content {
+    font-size: 14px;
+}
+
+.swal2-confirm {
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
 /* Pagina Index */
 .body-index {
     background-color: #bbddb9;
@@ -130,6 +149,11 @@ nav li a:hover {
     margin-bottom: 10px;
 }
 
+.btn-success {
+    /* Corrección del nombre de la clase */
+    margin-right: 50px;
+}
+
 .button-productos {
     background-color: rgb(210, 123, 214);
     color: white;
@@ -139,6 +163,19 @@ nav li a:hover {
     padding: 5px 20px;
     margin-top: auto;
     border-radius: 10px 10px 0 0;
+}
+
+#carrito-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1050;
+}
+
+#finalizar-compra {
+    background-color: #15823b;
+    color: white;
+    margin-bottom: 15px;
 }
 
 .input-productos {
@@ -166,9 +203,8 @@ nav li a:hover {
 }
 
 .titulos3 {
-    color: #9e483c;
-    background-color: #f8fffc;
-    font-size: 35px;
+    color: #eeeae9;
+    font-size: 25px;
     margin-top: 10px;
     text-align: center;
     opacity: 0.8;
@@ -214,15 +250,52 @@ form {
 
 .container-formulario {
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+.form {
+    flex: 1;
+    max-width: 600px;
+    margin-right: 20px;
+}
+
+.whatsapp-link {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 90px;
+    margin-left: 20px;
+}
+
+.whatsapp-link img {
+    width: 120px;
+    height: 120px;
+}
+
+.whatsapp-link a {
+    color: #197a3b;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.whatsapp-link a:hover {
+    color: #d36ef1;
 }
 
 .campo-grande,
 .consulta-amplia {
     padding: 10px;
-    font-size: 30px;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 14px;
+}
+
+.campo-grande {
+    font-size: 20px;
     border: 3px solid #a6eeaf;
 }
 
@@ -232,7 +305,7 @@ form {
 }
 
 label {
-    font-size: 30px;
+    font-size: 20px;
     color: #197a3b;
     font-weight: 600;
 }
@@ -240,8 +313,9 @@ label {
 .contacto-button,
 .button,
 .btn-primary,
-.btn {
-    font-size: 30px;
+.btn,
+.btn-eliminar {
+    font-size: 20px;
     width: fit-content;
     height: 50px;
     color: beige;
@@ -249,6 +323,16 @@ label {
     border: #7bd4aa;
     border-radius: 20px;
     margin: 20px 20px 20px 0;
+}
+
+.btn-eliminar:hover,
+.button #finalizar-compra:hover {
+    background-color: #be44a4;
+}
+
+.btn-eliminar {
+    height: 30px;
+    font-size: 15px;
 }
 
 .contacto-button:hover {
@@ -260,31 +344,15 @@ label {
     flex-direction: column;
 }
 
-.whatsapp-link {
-    display: flex;
-    flex-direction: row;
-    margin-right: 90px;
-    color: #197a3b;
-    align-content: stretch;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.whatsapp-link img {
-    width: 120px;
-    height: 120px;
-}
-
 th {
     text-align: left;
-    /* Ajustado para mejor alineación */
 }
+
 div:where(.swal2-icon) {
     user-select: none;
     -webkit-user-select: none;
 }
 
-/*--ADAPTACIÓN--*/
 @media (max-width: 1200px) {
     .container-productos {
         padding: 0 15%;
@@ -295,23 +363,39 @@ div:where(.swal2-icon) {
     .container-productos {
         padding: 0 10%;
         grid-template-columns: repeat(2, 1fr);
-        /* Dos columnas en pantallas medianas */
     }
 }
 
 @media (max-width: 768px) {
     .container-productos {
-        padding: 0 5%;
-        grid-template-columns: 1fr;
-        /* Una columna en pantallas pequeñas */
+        padding: 0 2%;
+
+
+    }
+    .container-index {
+        padding: 0 10%;
     }
 
+    .image-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .imagen-historia {
+        margin-bottom: 30px;
+    }
     .card p,
     .titulos,
     .titulos2,
     .titulos3,
-    .label {
-        font-size: 20px;
-        /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    .label,
+    .button-productos,
+    .btn-success,
+    .offcanvas.showing,
+    .button,
+    .btn-primary,
+    .offcanvas.show:not(.hiding) {
+        font-size: 14px;
     }
+
 }

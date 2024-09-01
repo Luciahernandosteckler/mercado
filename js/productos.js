@@ -1,4 +1,5 @@
 let productos = [];
+let carrito = [];
 
 // Función asíncrona para cargar los productos desde un archivo JSON
 const cargarProductos = async () => {
@@ -18,6 +19,10 @@ const cargarCarrito = () => {
     return carritoGuardado || [];
 };
 
+// Función para inicializar la página de productos
+const inicializarProductos = async () => {
+    productos = await cargarProductos();
+    console.log('Productos cargados:', productos);
     if (productos.length > 0) {
         generarTarjetasProductos();
         carrito = cargarCarrito();
@@ -47,9 +52,13 @@ const actualizarTotalCompra = () => {
 
     const descuentoEn = 100000;
     const descuentoPorcentaje = 0.30;
-    const totalConDescuento = totalCompra >= descuentoEn
-        ? totalCompra * (1 - descuentoPorcentaje)
-        : totalCompra;
+    let totalConDescuento;
+
+    if (totalCompra >= descuentoEn) {
+        totalConDescuento = totalCompra * (1 - descuentoPorcentaje);
+    } else {
+        totalConDescuento = totalCompra;
+    }
 
     document.querySelector("#total-sin-descuento").innerText = `$${totalCompra.toFixed(2)}`;
     document.querySelector("#total-con-descuento").innerText = `$${totalConDescuento.toFixed(2)}`;
@@ -61,6 +70,8 @@ const generarTarjetasProductos = () => {
     contenedorProductos.innerHTML = '';
 
     productos.forEach(producto => {
+        console.log(`Generando tarjeta para producto: ${producto.nombre}`);
+
         const tarjetaProducto = document.createElement("div");
         tarjetaProducto.classList.add("card");
 
@@ -128,10 +139,12 @@ const comprarProducto = async idProducto => {
         return;
     }
 
+    // Actualiza el stock del producto
     producto.cantidad -= cantidadSeleccionada;
     document.querySelector(`#stock_${idProducto}`).textContent = `Stock: ${producto.cantidad}`;
     document.querySelector(`#precio_${idProducto}`).textContent = `Precio total: $${calcularTotalProducto(idProducto).toFixed(2)}`;
 
+    // Actualiza el carrito
     carrito = cargarCarrito();
     const productoEnCarrito = carrito.find(item => item.id === idProducto);
     if (productoEnCarrito) {
@@ -150,13 +163,48 @@ const comprarProducto = async idProducto => {
         showConfirmButton: false,
         timer: 1000
     });
+};
+
+// Función para mostrar el contenido del carrito
+const mostrarCarrito = () => {
+    const carritoContenido = document.querySelector("#carrito-contenido");
+
+    if (!carritoContenido) {
+        console.error("Elemento con id 'carrito-contenido' no encontrado");
+        return;
+    }
+
+    carritoContenido.innerHTML = '';
+    let total = 0;
+
+    carrito.forEach(item => {
+        const producto = productos.find(p => p.id === item.id);
+        if (producto) {
+            const itemCarrito = document.createElement("div");
+            itemCarrito.classList.add("d-flex", "justify-content-between", "align-items-center", "mb-2");
+
+            const nombreProducto = document.createElement("p");
+            nombreProducto.textContent = `${producto.nombre} (x${item.cantidad})`;
 
             const precioTotal = document.createElement("p");
             const totalItem = item.cantidad * producto.precio;
             precioTotal.textContent = `$${totalItem.toFixed(2)}`;
 
+            // Crear el botón de eliminación
+            const botonEliminar = document.createElement("button");
+            botonEliminar.textContent = "x";
+            botonEliminar.classList.add("btn-eliminar"); 
+            botonEliminar.dataset.id = item.id;
+
+            // Manejar el evento de clic en el botón de eliminación
+            botonEliminar.addEventListener("click", (e) => {
+                const idProducto = e.target.dataset.id;
+                eliminarProductoDelCarrito(idProducto);
+            });
+
             itemCarrito.appendChild(nombreProducto);
             itemCarrito.appendChild(precioTotal);
+            itemCarrito.appendChild(botonEliminar);
             carritoContenido.appendChild(itemCarrito);
 
             total += totalItem;
@@ -165,6 +213,19 @@ const comprarProducto = async idProducto => {
 
     // Actualizar total en total-sin-descuento
     document.querySelector("#total-sin-descuento").innerText = `$${total.toFixed(2)}`;
+    actualizarTotalCompra();
+};
+
+// Función para eliminar un producto del carrito
+const eliminarProductoDelCarrito = (id) => {
+    // Filtrar el carrito para eliminar el producto con el id especificado
+    carrito = carrito.filter(item => item.id !== parseInt(id));
+
+    // Guardar el carrito actualizado en localStorage
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    // Limpiar el contenido actual del carrito en la interfaz
+    mostrarCarrito();
 };
 
 // Función para manejar la finalización de la compra
@@ -173,9 +234,14 @@ const finalizarCompra = () => {
     const totalCompra = parseFloat(document.querySelector("#total-sin-descuento").innerText.replace('$', '')) || 0;
     const descuentoEn = 100000;
     const descuentoPorcentaje = 0.30;
-    const totalConDescuento = totalCompra >= descuentoEn
-        ? totalCompra * (1 - descuentoPorcentaje)
-        : totalCompra;
+    let totalConDescuento;
+
+    // Calcular el total con descuento si aplica
+    if (totalCompra >= descuentoEn) {
+        totalConDescuento = totalCompra * (1 - descuentoPorcentaje);
+    } else {
+        totalConDescuento = totalCompra;
+    }
 
     // Vaciar el carrito en localStorage
     localStorage.removeItem('carrito');
@@ -199,5 +265,3 @@ const finalizarCompra = () => {
 
 // Inicializar los productos al cargar la página
 document.addEventListener('DOMContentLoaded', inicializarProductos);
-
-
