@@ -2,18 +2,25 @@
 nav {
     font-size: 35px;
     background-color: darkgreen;
-
 }
 
+.nav-item {
+    margin: 0 20px;
+}
+
+.bg-dark-green {
+    background-color: darkgreen;
+}
 
 li a,
 .whatsapp-link {
     font-size: 35px;
-    font-family: math;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: white;
     text-decoration: none;
-    padding: 20px 20px;
+    padding: 20px;
     font-weight: 700;
+    transition: all 0.3s ease;
 }
 
 nav li a:hover {
@@ -22,8 +29,14 @@ nav li a:hover {
     border-radius: 5px;
 }
 
-/*Pagina Index*/
+.navbar-nav .nav-link {
+    color: white;
+    padding: 15px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
 
+/* Pagina Index */
 .body-index {
     background-color: #bbddb9;
 }
@@ -33,12 +46,10 @@ nav li a:hover {
     text-align: center;
     padding: 30px;
     flex-direction: column;
-    flex-wrap: nowrap;
     align-items: stretch;
     gap: 20px;
     margin: 20px;
-    padding-left: 20%;
-    padding-right: 20%;
+    padding: 0 20%;
 }
 
 .image-container {
@@ -53,6 +64,7 @@ nav li a:hover {
     object-fit: cover;
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 100px;
 }
 
 .image-item img {
@@ -74,7 +86,7 @@ nav li a:hover {
     display: block;
 }
 
-/*Pagina Productos*/
+/* Pagina Productos */
 .productos {
     background-color: #bbddb9;
 }
@@ -93,8 +105,7 @@ nav li a:hover {
     grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     gap: 20px;
-    padding-left: 25%;
-    padding-right: 25%;
+    padding: 0 25%;
     margin-top: 20px;
 }
 
@@ -123,7 +134,7 @@ nav li a:hover {
     background-color: rgb(210, 123, 214);
     color: white;
     border: solid 3px navajowhite;
-    font-family: math;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 1rem;
     padding: 5px 20px;
     margin-top: auto;
@@ -138,7 +149,7 @@ nav li a:hover {
 }
 
 .titulos {
-    font-family: system-ui;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 35px;
     font-weight: 900;
     text-align: center;
@@ -146,7 +157,7 @@ nav li a:hover {
 }
 
 .titulos2 {
-    font-family: system-ui;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 35px;
     font-weight: 900;
     text-align: center;
@@ -160,7 +171,7 @@ nav li a:hover {
     font-size: 35px;
     margin-top: 10px;
     text-align: center;
-    opacity: 80%;
+    opacity: 0.8;
 }
 
 #payment-form {
@@ -171,12 +182,8 @@ nav li a:hover {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    opacity: 88%;
+    opacity: 0.88;
     margin-bottom: 10px;
-
 }
 
 .tarjeta {
@@ -191,8 +198,7 @@ footer {
     color: white;
 }
 
-/*Pagina contacto*/
-
+/* Pagina contacto */
 .contacto-fondo {
     background-color: #bbddb9;
     background-image: url(../imagenes/contactanos.png);
@@ -210,24 +216,19 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 90px;
 }
 
-.campo-grande {
+.campo-grande,
+.consulta-amplia {
     padding: 10px;
     font-size: 30px;
     border: 3px solid #a6eeaf;
-    border-radius: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .consulta-amplia {
-    padding: 10px;
     font-size: 20px;
     border: 3px solid #a6eeaf;
-    border-radius: 30px;
-    margin-top: 15px;
-    margin-bottom: 14px;
 }
 
 label {
@@ -247,8 +248,7 @@ label {
     background-color: #53be79;
     border: #7bd4aa;
     border-radius: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px 20px 20px 0;
 }
 
 .contacto-button:hover {
@@ -271,11 +271,47 @@ label {
 }
 
 .whatsapp-link img {
-    display: flex;
     width: 120px;
     height: 120px;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-direction: column;
+}
+
+th {
+    text-align: left;
+    /* Ajustado para mejor alineación */
+}
+div:where(.swal2-icon) {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/*--ADAPTACIÓN--*/
+@media (max-width: 1200px) {
+    .container-productos {
+        padding: 0 15%;
+    }
+}
+
+@media (max-width: 992px) {
+    .container-productos {
+        padding: 0 10%;
+        grid-template-columns: repeat(2, 1fr);
+        /* Dos columnas en pantallas medianas */
+    }
+}
+
+@media (max-width: 768px) {
+    .container-productos {
+        padding: 0 5%;
+        grid-template-columns: 1fr;
+        /* Una columna en pantallas pequeñas */
+    }
+
+    .card p,
+    .titulos,
+    .titulos2,
+    .titulos3,
+    .label {
+        font-size: 20px;
+        /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    }
 }

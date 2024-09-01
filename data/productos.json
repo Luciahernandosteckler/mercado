@@ -1,0 +1,86 @@
+[
+    {
+        "id": 1,
+        "nombre": "Cereales",
+        "precio": 300,
+        "cantidad": 100,
+        "imagen": "1.png"
+    },
+    {
+        "id": 2,
+        "nombre": "Carne",
+        "precio": 390,
+        "cantidad": 50,
+        "imagen": "2.png"
+    },
+    {
+        "id": 3,
+        "nombre": "Azucar",
+        "precio": 500,
+        "cantidad": 20,
+        "imagen": "3.png"
+    },
+    {
+        "id": 4,
+        "nombre": "Fideos",
+        "precio": 60,
+        "cantidad": 21,
+        "imagen": "4.png"
+    },
+    {
+        "id": 5,
+        "nombre": "Arroz",
+        "precio": 260,
+        "cantidad": 30,
+        "imagen": "5.png"
+    },
+    {
+        "id": 6,
+        "nombre": "Café",
+        "precio": 39,
+        "cantidad": 60,
+        "imagen": "6.png"
+    },
+    {
+        "id": 7,
+        "nombre": "Miel",
+        "precio": 239,
+        "cantidad": 10,
+        "imagen": "7.png"
+    },
+    {
+        "id": 8,
+        "nombre": "Pan Lactal",
+        "precio": 180,
+        "cantidad": 90,
+        "imagen": "8.png"
+    },
+    {
+        "id": 9,
+        "nombre": "Harina",
+        "precio": 190,
+        "cantidad": 100,
+        "imagen": "9.png"
+    },
+    {
+        "id": 10,
+        "nombre": "Yerba",
+        "precio": 1900,
+        "cantidad": 10,
+        "imagen": "10.png"
+    },
+    {
+        "id": 11,
+        "nombre": "Queso",
+        "precio": 1800,
+        "cantidad": 120,
+        "imagen": "11.png"
+    },
+    {
+        "id": 12,
+        "nombre": "Jamon",
+        "precio": 1780,
+        "cantidad": 110,
+        "imagen": "12.png"
+    }
+]

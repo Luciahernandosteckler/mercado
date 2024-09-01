@@ -1,54 +1,64 @@
-// Variable global para productos
 let productos = [];
 
-// Cargar productos desde el archivo JSON y guardarlos en localStorage
-fetch('../data/productos.json') // Ajusta la ruta según tu estructura de carpetas
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Datos cargados desde JSON:', data);
-        localStorage.setItem('productos', JSON.stringify(data));
-        // Inicializa productos y actualiza la vista
-        inicializar(); // Llama a inicializar después de guardar los datos
-    })
-    .catch(error => console.error('Error cargando el archivo JSON:', error));
-
-// Carga productos desde localStorage
-function cargarProductosDesdeLocalStorage() {
-    const productosJSON = localStorage.getItem('productos');
-    console.log('Productos desde localStorage en productos.js:', productosJSON); // Debugging
-    if (productosJSON) {
-        try {
-            return JSON.parse(productosJSON);
-        } catch (e) {
-            console.error('Error al parsear productos desde localStorage:', e);
-            return [];
-        }
+// Función asíncrona para cargar los productos desde un archivo JSON
+const cargarProductos = async () => {
+    try {
+        const respuesta = await fetch('/data/productos.json');
+        if (!respuesta.ok) throw new Error('Error en la solicitud de datos');
+        return await respuesta.json();
+    } catch (error) {
+        console.error('Error al cargar los productos:', error);
+        return [];
     }
-    return [];
-}
+};
 
-// Inicializa productos y actualiza la vista
-function inicializar() {
-    productos = cargarProductosDesdeLocalStorage(); // Asigna a la variable global
-    console.log('Productos después de cargar en inicializar:', productos); // Debugging
+// Función para cargar el carrito desde localStorage
+const cargarCarrito = () => {
+    const carritoGuardado = JSON.parse(localStorage.getItem('carrito'));
+    return carritoGuardado || [];
+};
 
     if (productos.length > 0) {
-        generarTarjetasProductos(); // Usa productos desde la variable global
-        actualizarTotalCompra();    // Usa productos desde la variable global
-    } else {
-        console.error('No se encontraron productos en localStorage.');
+        generarTarjetasProductos();
+        carrito = cargarCarrito();
+        mostrarCarrito();
+        actualizarTotalCompra();
     }
-}
+};
 
-// Genera tarjetas de productos
-function generarTarjetasProductos() {
-    const contenedorProductos = document.getElementById("productos-container");
-    contenedorProductos.innerHTML = ''; // Limpiar contenido previo
+// Función para calcular el total de un producto específico
+const calcularTotalProducto = idProducto => {
+    const inputCantidad = document.querySelector(`#cant_${idProducto}`);
+    const cantidadSeleccionada = parseInt(inputCantidad?.value, 10) || 0;
+    const producto = productos.find(p => p.id === idProducto);
+    return cantidadSeleccionada * (producto?.precio || 0);
+};
+
+// Función para actualizar el total de compra y aplicar descuento
+const actualizarTotalCompra = () => {
+    let totalCompra = 0;
+
+    carrito.forEach(item => {
+        const producto = productos.find(p => p.id === item.id);
+        if (producto) {
+            totalCompra += item.cantidad * producto.precio;
+        }
+    });
+
+    const descuentoEn = 100000;
+    const descuentoPorcentaje = 0.30;
+    const totalConDescuento = totalCompra >= descuentoEn
+        ? totalCompra * (1 - descuentoPorcentaje)
+        : totalCompra;
+
+    document.querySelector("#total-sin-descuento").innerText = `$${totalCompra.toFixed(2)}`;
+    document.querySelector("#total-con-descuento").innerText = `$${totalConDescuento.toFixed(2)}`;
+};
+
+// Función para generar tarjetas de productos en la interfaz
+const generarTarjetasProductos = () => {
+    const contenedorProductos = document.querySelector("#productos-container");
+    contenedorProductos.innerHTML = '';
 
     productos.forEach(producto => {
         const tarjetaProducto = document.createElement("div");
@@ -65,23 +75,30 @@ function generarTarjetasProductos() {
         precioProductoElemento.textContent = `Precio: $${producto.precio}`;
 
         const cantidadDisponibleElemento = document.createElement("p");
-        cantidadDisponibleElemento.id = `stock_${producto.nombre}`;
+        cantidadDisponibleElemento.id = `stock_${producto.id}`;
         cantidadDisponibleElemento.textContent = `Stock: ${producto.cantidad}`;
 
         const inputCantidadProducto = document.createElement("input");
         inputCantidadProducto.classList.add("input-productos");
         inputCantidadProducto.type = "number";
-        inputCantidadProducto.id = `cant_${producto.nombre}`;
-        inputCantidadProducto.min = "1"; // Asegura que el número mínimo sea 1
+        inputCantidadProducto.id = `cant_${producto.id}`;
+        inputCantidadProducto.min = "1";
+        inputCantidadProducto.max = producto.cantidad;
+        inputCantidadProducto.value = "1";
+        inputCantidadProducto.addEventListener("input", () => {
+            const precioTotal = calcularTotalProducto(producto.id);
+            document.querySelector(`#precio_${producto.id}`).textContent = `Precio total: $${precioTotal.toFixed(2)}`;
+            actualizarTotalCompra();
+        });
 
         const botonComprarProducto = document.createElement("button");
         botonComprarProducto.classList.add("button-productos");
         botonComprarProducto.textContent = "Comprar";
-        botonComprarProducto.addEventListener("click", () => comprarProducto(producto.nombre));
-        
+        botonComprarProducto.addEventListener("click", () => comprarProducto(producto.id));
+
         const precioTotalProductoElemento = document.createElement("p");
-        precioTotalProductoElemento.id = `precio_${producto.nombre}`;
-        precioTotalProductoElemento.textContent = `Precio total: $0`;
+        precioTotalProductoElemento.id = `precio_${producto.id}`;
+        precioTotalProductoElemento.textContent = `Precio total: $${calcularTotalProducto(producto.id).toFixed(2)}`;
 
         tarjetaProducto.appendChild(nombreProductoElemento);
         tarjetaProducto.appendChild(imagenProductoElemento);
@@ -93,32 +110,12 @@ function generarTarjetasProductos() {
 
         contenedorProductos.appendChild(tarjetaProducto);
     });
-}
+};
 
-// Actualiza el total de la compra
-function actualizarTotalCompra() {
-    let totalCompra = 0;
-
-    productos.forEach(producto => {
-        const cantidad = parseInt(document.getElementById(`cant_${producto.nombre}`).value, 10) || 0;
-        totalCompra += cantidad * producto.precio;
-    });
-
-    const descuentoEn = 100000;
-    const descuentoPorcentaje = 0.30;
-
-    const totalConDescuento = totalCompra >= descuentoEn
-        ? totalCompra * (1 - descuentoPorcentaje)
-        : totalCompra;
-
-    document.getElementById("total-sin-descuento").innerText = `${totalCompra.toFixed(2)}`;
-    document.getElementById("total-con-descuento").innerText = `Total con descuento: $${totalConDescuento.toFixed(2)}`;
-}
-
-// Maneja la compra de un producto
-function comprarProducto(nombreProducto) {
-    const producto = productos.find(p => p.nombre === nombreProducto);
-    const cantidadSeleccionada = parseInt(document.getElementById(`cant_${nombreProducto}`).value, 10);
+// Función para manejar la compra de un producto
+const comprarProducto = async idProducto => {
+    const producto = productos.find(p => p.id === idProducto);
+    const cantidadSeleccionada = parseInt(document.querySelector(`#cant_${idProducto}`).value, 10);
 
     if (!producto || isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1 || cantidadSeleccionada > producto.cantidad) {
         Swal.fire({
@@ -131,49 +128,76 @@ function comprarProducto(nombreProducto) {
         return;
     }
 
-    const totalProducto = calcularTotalProducto(nombreProducto);
+    producto.cantidad -= cantidadSeleccionada;
+    document.querySelector(`#stock_${idProducto}`).textContent = `Stock: ${producto.cantidad}`;
+    document.querySelector(`#precio_${idProducto}`).textContent = `Precio total: $${calcularTotalProducto(idProducto).toFixed(2)}`;
 
-    if (totalProducto > 0) {
-        producto.cantidad -= cantidadSeleccionada;
+    carrito = cargarCarrito();
+    const productoEnCarrito = carrito.find(item => item.id === idProducto);
+    if (productoEnCarrito) {
+        productoEnCarrito.cantidad += cantidadSeleccionada;
+    } else {
+        carrito.push({ id: idProducto, cantidad: cantidadSeleccionada });
+    }
+    localStorage.setItem('carrito', JSON.stringify(carrito));
 
-        const cantidadDisponibleElemento = document.getElementById(`stock_${nombreProducto}`);
-        if (cantidadDisponibleElemento) {
-            cantidadDisponibleElemento.textContent = `Stock: ${producto.cantidad}`;
+    await mostrarCarrito();
+
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: '¡Compra realizada con éxito!',
+        showConfirmButton: false,
+        timer: 1000
+    });
+
+            const precioTotal = document.createElement("p");
+            const totalItem = item.cantidad * producto.precio;
+            precioTotal.textContent = `$${totalItem.toFixed(2)}`;
+
+            itemCarrito.appendChild(nombreProducto);
+            itemCarrito.appendChild(precioTotal);
+            carritoContenido.appendChild(itemCarrito);
+
+            total += totalItem;
         }
+    });
 
-        document.getElementById(`precio_${nombreProducto}`).innerText = `Precio total: $${totalProducto}`;
+    // Actualizar total en total-sin-descuento
+    document.querySelector("#total-sin-descuento").innerText = `$${total.toFixed(2)}`;
+};
 
-        actualizarTotalCompra(); // Actualiza el total general
+// Función para manejar la finalización de la compra
+const finalizarCompra = () => {
+    // Obtener el total final de la compra
+    const totalCompra = parseFloat(document.querySelector("#total-sin-descuento").innerText.replace('$', '')) || 0;
+    const descuentoEn = 100000;
+    const descuentoPorcentaje = 0.30;
+    const totalConDescuento = totalCompra >= descuentoEn
+        ? totalCompra * (1 - descuentoPorcentaje)
+        : totalCompra;
 
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: '¡Compra realizada con éxito!',
-            showConfirmButton: false,
-            timer: 1000
-        });
-    }
-}
+    // Vaciar el carrito en localStorage
+    localStorage.removeItem('carrito');
+    carrito = [];
 
-// Calcula el total de un producto específico
-function calcularTotalProducto(nombreProducto) {
-    const cantidadSeleccionada = parseInt(document.getElementById(`cant_${nombreProducto}`).value, 10);
-    const producto = productos.find(p => p.nombre === nombreProducto);
+    // Vaciar el contenido visual del carrito
+    mostrarCarrito();
 
-    if (!producto || isNaN(cantidadSeleccionada) || cantidadSeleccionada < 1) {
-        Swal.fire({
-            position: 'center',
-            icon: 'error',
-            title: 'Ingrese una cantidad válida',
-            showConfirmButton: true,
-            timer: 1000
-        });
-        return 0; // Retorna 0 si hay un error
-    }
+    // Actualizar totales en la interfaz
+    document.querySelector("#total-sin-descuento").innerText = `$0.00`;
+    document.querySelector("#total-con-descuento").innerText = `$0.00`;
 
-    return cantidadSeleccionada * producto.precio;
-}
+    // Mostrar alerta con el valor con descuento
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: `¡Compra finalizada con éxito! Total con descuento: $${totalConDescuento.toFixed(2)}`,
+        showConfirmButton: true,
+    });
+};
 
-// Espera a que el DOM se cargue para inicializar
-document.addEventListener('DOMContentLoaded', inicializar);
+// Inicializar los productos al cargar la página
+document.addEventListener('DOMContentLoaded', inicializarProductos);
+
 
